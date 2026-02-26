@@ -1,8 +1,10 @@
 from telegram import Update
 from telegram.ext import ApplicationBuilder, CallbackQueryHandler, ContextTypes
 
-TOKEN = "8772465610:AAFS70a0fqgwf780u9LSW-GpUoHfDjv7VO0" # 
-ADMIN_CHAT_ID = 854268073  # رقمك
+import os
+
+TOKEN = os.getenv("BOT_TOKEN")
+ADMIN_CHAT_ID = int(os.getenv("ADMIN_CHAT_ID"))
 
 async def button_click(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
