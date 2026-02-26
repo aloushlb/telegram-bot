@@ -1,10 +1,11 @@
-from telegram import Update
-from telegram.ext import ApplicationBuilder, CallbackQueryHandler, ContextTypes
+from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
+from telegram.ext import ApplicationBuilder, CallbackQueryHandler, MessageHandler, filters, ContextTypes
 import os
 
 TOKEN = os.getenv("BOT_TOKEN")
 ADMIN_CHAT_ID = int(os.getenv("ADMIN_CHAT_ID"))
 
+# عند ضغط زر
 async def button_click(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.answer()
@@ -14,11 +15,33 @@ async def button_click(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     await context.bot.send_message(
         chat_id=ADMIN_CHAT_ID,
-        text=f" answer is: {choice}"
+        text=f"Answer is: {choice}"
+    )
+    
+    # يمكن تعديل رسالة الصورة لتظهر الاختيار
+    await query.edit_message_caption(caption=f"اخترت: {choice}")
+
+# عند استقبال صورة
+async def photo_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    keyboard = [
+        [InlineKeyboardButton("A", callback_data="A"), InlineKeyboardButton("B", callback_data="B")],
+        [InlineKeyboardButton("C", callback_data="C"), InlineKeyboardButton("D", callback_data="D")]
+    ]
+    reply_markup = InlineKeyboardMarkup(keyboard)
+
+    photo_file = update.message.photo[-1]
+    # نرسل الصورة مع الأزرار
+    await update.message.reply_photo(
+        photo=photo_file.file_id,
+        caption="اختر أحد الخيارات:",
+        reply_markup=reply_markup
     )
 
 app = ApplicationBuilder().token(TOKEN).build()
+
+# نضيف handlers
 app.add_handler(CallbackQueryHandler(button_click))
+app.add_handler(MessageHandler(filters.PHOTO, photo_handler))
 
 print("Bot is running...")
 
