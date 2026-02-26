@@ -13,13 +13,13 @@ async def button_click(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user = query.from_user.first_name
     choice = query.data
 
-    await context.bot.send_message(
-        chat_id=ADMIN_CHAT_ID,
-        text=f"Answer is: {choice}"
-    )
+    #await context.bot.send_message(
+        #chat_id=ADMIN_CHAT_ID,
+       # text=f"Answer is: {choice}"
+    #)
     
     # يمكن تعديل رسالة الصورة لتظهر الاختيار
-    await query.edit_message_caption(caption=f"اخترت: {choice}")
+    await query.edit_message_caption(caption=f"Your choise: {choice}")
 
 # عند استقبال صورة
 async def photo_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -33,7 +33,7 @@ async def photo_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     # نرسل الصورة مع الأزرار
     await update.message.reply_photo(
         photo=photo_file.file_id,
-        caption="اختر أحد الخيارات:",
+        caption="Choose:",
         reply_markup=reply_markup
     )
 
