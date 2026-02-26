@@ -24,4 +24,16 @@ app = ApplicationBuilder().token(TOKEN).build()
 app.add_handler(CallbackQueryHandler(button_click))
 
 print("Bot is running...")
-app.run_polling()
+import os
+
+PORT = int(os.getenv("PORT", 10000))
+TOKEN = os.getenv("BOT_TOKEN")
+
+RENDER_EXTERNAL_URL = os.getenv("RENDER_EXTERNAL_URL")
+WEBHOOK_URL = f"{RENDER_EXTERNAL_URL}/{TOKEN}"
+
+app.run_webhook(
+    listen="0.0.0.0",
+    port=PORT,
+    webhook_url=WEBHOOK_URL,
+)
