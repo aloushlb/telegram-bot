@@ -14,7 +14,7 @@ async def button_click(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     await context.bot.send_message(
         chat_id=ADMIN_CHAT_ID,
-        text=f"Hi {user}, answer is: {choice}"
+        text=f" answer is: {choice}"
     )
 
 app = ApplicationBuilder().token(TOKEN).build()
