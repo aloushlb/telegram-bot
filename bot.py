@@ -1,6 +1,5 @@
 from telegram import Update
 from telegram.ext import ApplicationBuilder, CallbackQueryHandler, ContextTypes
-
 import os
 
 TOKEN = os.getenv("BOT_TOKEN")
@@ -13,27 +12,23 @@ async def button_click(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user = query.from_user.first_name
     choice = query.data
 
-    # رسالة لك
     await context.bot.send_message(
         chat_id=ADMIN_CHAT_ID,
-        text=f" Hi {user} , answer is: {choice}"
+        text=f"Hi {user}, answer is: {choice}"
     )
 
 app = ApplicationBuilder().token(TOKEN).build()
-
 app.add_handler(CallbackQueryHandler(button_click))
 
 print("Bot is running...")
-import os
 
 PORT = int(os.getenv("PORT", 10000))
-TOKEN = os.getenv("BOT_TOKEN")
-
-RENDER_EXTERNAL_URL = os.getenv("RENDER_EXTERNAL_URL")
-WEBHOOK_URL = f"{RENDER_EXTERNAL_URL}/{TOKEN}"
+WEBHOOK_PATH = f"/{TOKEN}"
+WEBHOOK_URL = f"https://telegram-bot-tzwu.onrender.com{WEBHOOK_PATH}"
 
 app.run_webhook(
     listen="0.0.0.0",
     port=PORT,
     webhook_url=WEBHOOK_URL,
+    url_path=TOKEN,
 )
